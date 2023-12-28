@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Jetstream\Membership as JetstreamMembership;
 
 class Membership extends JetstreamMembership
@@ -12,4 +13,9 @@ class Membership extends JetstreamMembership
      * @var bool
      */
     public $incrementing = true;
+
+    public function memberRole(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role', 'uuid');
+    }
 }

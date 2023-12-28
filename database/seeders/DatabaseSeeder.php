@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $users = [
             [
                 'name' => 'Super User',
-                'email' => 'super@email.com',
+                'email' => 'super@admin.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
                 'terms' => 1,

@@ -7,6 +7,7 @@ use App\Models\User;
 use Closure;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Laravel\Jetstream\Contracts\AddsTeamMembers;
 use Laravel\Jetstream\Events\AddingTeamMember;
 use Laravel\Jetstream\Events\TeamMemberAdded;
@@ -59,9 +60,7 @@ class AddTeamMember implements AddsTeamMembers
     {
         return array_filter([
             'email' => ['required', 'email', 'exists:users'],
-            'role' => Jetstream::hasRoles()
-                            ? ['required', 'string', new Role]
-                            : null,
+            'role' => ['required', 'string', Rule::exists('roles', 'uuid')],
         ]);
     }
 

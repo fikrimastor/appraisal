@@ -32,6 +32,11 @@ class CreateTeam implements CreatesTeams
             'personal_team' => false,
         ]));
 
+        $team->roles()->firstOrCreate([
+            'name' => 'member',
+            'description' => 'Member of the team',
+        ]);
+
         return $team;
     }
 }

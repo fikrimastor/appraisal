@@ -66,8 +66,8 @@ class InviteTeamMember implements InvitesTeamMembers
                     $query->where('team_id', $team->id);
                 }),
             ],
-            'role' => Jetstream::hasRoles()
-                            ? ['required', 'string', new Role]
+            'role' => $team->roles->isNotEmpty()
+                            ? ['required', 'string', Rule::exists('roles', 'uuid')]
                             : null,
         ]);
     }
