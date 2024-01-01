@@ -187,4 +187,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'allowed_admin' => env('ALLOWED_ADMIN', 'admin.com'),
 ];

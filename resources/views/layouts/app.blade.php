@@ -19,6 +19,7 @@
     </head>
     <body class="font-sans antialiased">
         <x-banner />
+        @php(setPermissionsTeamId(auth()->user()->currentTeam))
 
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @livewire('navigation-menu')
@@ -41,5 +42,9 @@
         @stack('modals')
 
         @livewireScripts
+        @livewire('wire-elements-modal')
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <x-livewire-alert::scripts />
     </body>
 </html>

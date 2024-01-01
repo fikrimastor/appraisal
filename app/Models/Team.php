@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
@@ -12,7 +14,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Team extends JetstreamTeam
 {
-    use HasFactory;
+    use HasFactory, HasRoles, SoftDeletes;
+
+    protected array $guard_name = ['web'];
 
     /**
      * The attributes that should be cast.
@@ -43,10 +47,4 @@ class Team extends JetstreamTeam
         'updated' => TeamUpdated::class,
         'deleted' => TeamDeleted::class,
     ];
-
-    public function roles(): HasMany
-    {
-        return $this->hasMany(Role::class);
-    }
-
 }

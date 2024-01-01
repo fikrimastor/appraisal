@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -50,9 +51,10 @@ class CreateNewUser implements CreatesNewUsers
             'personal_team' => true,
         ]);
 
-        $team->roles()->firstOrCreate([
+        Role::firstOrCreate([
             'name' => 'member',
             'description' => 'Member of the team',
+            'team_id' => $team->id,
         ]);
 
         $user->ownedTeams()->save($team);

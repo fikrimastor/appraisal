@@ -16,13 +16,9 @@ class AddTeamMemberForm extends Form
 
     public function rules(): array
     {
-//        dd($this->role);
         return [
             'email' => ['required', 'string', 'max:255'],
-//            'role' => ['nullable', 'string', 'exists:App\Models\Role,uuid'],
             'role' => ['nullable', 'string', Rule::exists('roles', 'uuid')],
-//            'roleUuid' => ['nullable', 'string', Rule::exists('roles', 'uuid')],
-////            'role' => ['nullable', Rule::exists('roles')->where('uuid', '=', $this->role),],
         ];
     }
 

@@ -58,4 +58,9 @@ class JetstreamServiceProvider extends ServiceProvider
             'update',
         ])->description('Editor users have the ability to read, create, and update.');
     }
+
+    protected function teamGuard()
+    {
+        return 'team';
+    }
 }

@@ -2,8 +2,12 @@
 
 namespace App\Traits\Teams;
 
+use App\Models\Role;
+use App\Models\Team;
+use Illuminate\Support\Str;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Jetstream\OwnerRole;
+use Laravel\Sanctum\HasApiTokens;
 
 trait HasTeamsTrait
 {
@@ -11,15 +15,14 @@ trait HasTeamsTrait
 
     /**
      * Get the role that the user has on the team.
-     *
-     * @param  mixed  $team
-     * @return \Laravel\Jetstream\Role|null
+     * @param $team
+     * @return Role
      */
     public function teamRole($team)
     {
-        if ($this->ownsTeam($team)) {
-            return new OwnerRole;
-        }
+//        if ($this->ownsTeam($team)) {
+//            return new OwnerRole;
+//        }
 
         if (! $this->belongsToTeam($team)) {
             return;
@@ -45,5 +48,37 @@ trait HasTeamsTrait
         }
 
         return $this->belongsToTeam($team) && optional($team->users->firstWhere('id', $this->id)->membership->memberRole)->uuid === $role;
+    }
+
+    /**
+     * Get the user's permissions for the given team.
+     *
+     * @param  mixed  $team
+     * @return array
+     */
+    public function teamPermissions($team)
+    {
+        if ($this->ownsTeam($team)) {
+            return ['*'];
+        }
+
+        if (! $this->belongsToTeam($team)) {
+            return [];
+        }
+
+        return $this->teamRole($team)?->permissions->pluck('name')->toArray() ?? [];
+    }
+
+    /**
+     * Assign super admin role to the team.
+     *
+     * @param  Team  $superAdminTeam
+     * @return \App\Models\User
+     */
+    public function assignSuperAdmin(Team $superAdminTeam)
+    {
+        setPermissionsTeamId($superAdminTeam);
+        // get the admin user and assign roles/permissions on new team model
+        return $this->assignRole('Super Admin');
     }
 }

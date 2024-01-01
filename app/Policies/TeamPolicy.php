@@ -2,13 +2,15 @@
 
 namespace App\Policies;
 
+use App\Models\Permission;
 use App\Models\Team;
 use App\Models\User;
+use App\Traits\Policies\HasInterceptionTrait;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization, HasInterceptionTrait;
 
     /**
      * Determine whether the user can view any models.
@@ -64,6 +66,11 @@ class TeamPolicy
     public function removeTeamMember(User $user, Team $team): bool
     {
         return $user->ownsTeam($team);
+    }
+
+    public function manageTeam(User $user, Team $team): bool
+    {
+        return $user->ownsTeam($team) || $team->userHasPermission($user, 'teams.manage');
     }
 
     /**
